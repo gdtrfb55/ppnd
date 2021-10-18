@@ -1,4 +1,4 @@
-mod options;
+pub(crate) mod options;
 mod netdev;
 mod ifregex;
 mod ifstats;

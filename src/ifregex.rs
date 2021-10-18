@@ -1,4 +1,4 @@
-use regex::Regex;
+pub(crate) use regex::Regex;
 
 pub fn build() -> Result<Regex, String> {
   const IF_LINE_RE: &str = r"^\s*[[:alnum:]]+:(?:\s+\d+){16}$";
