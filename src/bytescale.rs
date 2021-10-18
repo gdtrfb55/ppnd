@@ -64,31 +64,31 @@ fn scale_format(count: u64, scale: &Scale) -> (u64, usize, String) {
   match scale {
     Scale::Raw => (B_DIV, B_MAX_PREC, B_SUFF.to_string()),
     Scale::Dyn2 => if count < KIB_DIV {
-        scale_format(count, &Scale::Raw)
-      } else if count < MIB_DIV {
-        scale_format(count, &Scale::Kibi)
-      } else if count < GIB_DIV {
-        scale_format(count, &Scale::Mebi)
-      } else if count < TIB_DIV {
-        scale_format(count, &Scale::Gibi)
-      } else if count < PIB_DIV {
-        scale_format(count, &Scale::Tebi)
-      } else {
-        scale_format(count, &Scale::Pebi)
-      },
+      scale_format(count, &Scale::Raw)
+    } else if count < MIB_DIV {
+      scale_format(count, &Scale::Kibi)
+    } else if count < GIB_DIV {
+      scale_format(count, &Scale::Mebi)
+    } else if count < TIB_DIV {
+      scale_format(count, &Scale::Gibi)
+    } else if count < PIB_DIV {
+      scale_format(count, &Scale::Tebi)
+    } else {
+      scale_format(count, &Scale::Pebi)
+    },
     Scale::Dyn10 => if count < KB_DIV {
-        scale_format(count, &Scale::Raw)
-      } else if count < MIB_DIV {
-        scale_format(count, &Scale::Kilo)
-      } else if count < GIB_DIV {
-        scale_format(count, &Scale::Mega)
-      } else if count < TIB_DIV {
-        scale_format(count, &Scale::Giga)
-      } else if count < PIB_DIV {
-        scale_format(count, &Scale::Tera)
-      } else {
-        scale_format(count, &Scale::Peta)
-      }, 
+      scale_format(count, &Scale::Raw)
+    } else if count < MIB_DIV {
+      scale_format(count, &Scale::Kilo)
+    } else if count < GIB_DIV {
+      scale_format(count, &Scale::Mega)
+    } else if count < TIB_DIV {
+      scale_format(count, &Scale::Giga)
+    } else if count < PIB_DIV {
+      scale_format(count, &Scale::Tera)
+    } else {
+      scale_format(count, &Scale::Peta)
+    }, 
     Scale::Kilo => (KB_DIV, K_MAX_PREC, KB_SUFF.to_string()),
     Scale::Mega => (MB_DIV, M_MAX_PREC, MB_SUFF.to_string()),
     Scale::Giga => (GB_DIV, G_MAX_PREC, GB_SUFF.to_string()),
