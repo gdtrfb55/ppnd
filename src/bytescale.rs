@@ -64,30 +64,30 @@ fn scale_format(count: u64, scale: &Scale) -> (u64, usize, String) {
   match scale {
     Scale::Raw => (B_DIV, B_MAX_PREC, B_SUFF.to_string()),
     Scale::Dyn2 => if count < KIB_DIV {
-      scale_format(count, &Scale::Raw)
+      (B_DIV, B_MAX_PREC, B_SUFF.to_string())
     } else if count < MIB_DIV {
-      scale_format(count, &Scale::Kibi)
+      (KIB_DIV, K_MAX_PREC, KIB_SUFF.to_string())
     } else if count < GIB_DIV {
-      scale_format(count, &Scale::Mebi)
+      (MIB_DIV, M_MAX_PREC, MIB_SUFF.to_string())
     } else if count < TIB_DIV {
-      scale_format(count, &Scale::Gibi)
+      (GIB_DIV, G_MAX_PREC, GIB_SUFF.to_string())
     } else if count < PIB_DIV {
-      scale_format(count, &Scale::Tebi)
+      (TIB_DIV, T_MAX_PREC, TIB_SUFF.to_string())
     } else {
-      scale_format(count, &Scale::Pebi)
+      (PIB_DIV, P_MAX_PREC, PIB_SUFF.to_string())
     },
     Scale::Dyn10 => if count < KB_DIV {
-      scale_format(count, &Scale::Raw)
+      (B_DIV, B_MAX_PREC, B_SUFF.to_string())
     } else if count < MIB_DIV {
-      scale_format(count, &Scale::Kilo)
+      (KB_DIV, K_MAX_PREC, KB_SUFF.to_string())
     } else if count < GIB_DIV {
-      scale_format(count, &Scale::Mega)
+      (MB_DIV, M_MAX_PREC, MB_SUFF.to_string())
     } else if count < TIB_DIV {
-      scale_format(count, &Scale::Giga)
+      (GB_DIV, G_MAX_PREC, GB_SUFF.to_string())
     } else if count < PIB_DIV {
-      scale_format(count, &Scale::Tera)
+      (TB_DIV, T_MAX_PREC, TB_SUFF.to_string())
     } else {
-      scale_format(count, &Scale::Peta)
+      (PB_DIV, P_MAX_PREC, PB_SUFF.to_string())
     }, 
     Scale::Kilo => (KB_DIV, K_MAX_PREC, KB_SUFF.to_string()),
     Scale::Mega => (MB_DIV, M_MAX_PREC, MB_SUFF.to_string()),
