@@ -1,9 +1,39 @@
-pub(crate) mod options;
-mod netdev;
-mod ifregex;
+mod options;
 mod ifstats;
 mod bytescale;
-mod timestamp;
+
+mod ifregex {
+    use regex::Regex;
+
+    pub fn build() -> Result<Regex, String> {
+        const IF_LINE_RE: &str = r"^\s*[[:alnum:]]+:(?:\s+\d+){16}$";
+
+        if let Ok(r) = Regex::new(IF_LINE_RE) { return Ok(r) };
+        Err("regular expression is invalid".to_string())
+    }
+}
+
+mod netdev {
+    pub fn read() -> Result<String, String> {
+        use std::fs;
+
+        const PATH: &str = r"/proc/net/dev";
+        
+        if let Ok(s) = fs::read_to_string(PATH) { return Ok(s) };
+        Err(format!("could not read {}", PATH))
+    }
+}
+
+mod timestamp {
+    extern crate chrono;
+
+    pub fn print() {
+        use chrono::prelude::*;
+
+        let local = Local::now();
+        println!("\n{}", local.format("=== %H:%M:%S ===").to_string());
+    }
+}
 
 fn run() -> Result<(), String> {
     use crate::ifstats::IFStats;
@@ -12,8 +42,8 @@ fn run() -> Result<(), String> {
 
     let opts = options::get()?;
     let if_line = ifregex::build()?;
-    let mut count = opts.repeat;
-    let show_time = count > 2;
+    let mut count  = opts.repeat;
+    let show_time  = count > 2;
     let mut stats: IFStats;
  
     loop {
