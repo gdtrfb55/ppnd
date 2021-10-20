@@ -64,28 +64,28 @@ fn scale_format(bytes: u64, scale: &Scale) -> (u64, usize, String) {
     match scale {
         Scale::Dyn10 => if bytes < KB_DIV {
             scale_format(bytes, &Scale::Raw)
-            } else if bytes < MB_DIV {
+        } else if bytes < MB_DIV {
             scale_format(bytes, &Scale::Kilo)
-            } else if bytes < GB_DIV {
+        } else if bytes < GB_DIV {
             scale_format(bytes, &Scale::Mega)
-            } else if bytes < TB_DIV {
+        } else if bytes < TB_DIV {
             scale_format(bytes, &Scale::Giga)
-            } else if bytes < PB_DIV {
+        } else if bytes < PB_DIV {
             scale_format(bytes, &Scale::Tera)
-            } else {
+        } else {
             scale_format(bytes, &Scale::Peta)
         },
         Scale::Dyn2 => if bytes < KIB_DIV {
             scale_format(bytes, &Scale::Raw)
-            } else if bytes < MIB_DIV {
+        } else if bytes < MIB_DIV {
             scale_format(bytes, &Scale::Kibi)
-            } else if bytes < GIB_DIV {
+        } else if bytes < GIB_DIV {
             scale_format(bytes, &Scale::Mebi)
-            } else if bytes < TIB_DIV {
+        } else if bytes < TIB_DIV {
             scale_format(bytes, &Scale::Gibi)
-            } else if bytes < PIB_DIV {
+        } else if bytes < PIB_DIV {
             scale_format(bytes, &Scale::Tebi)
-            } else {
+        } else {
             scale_format(bytes, &Scale::Pebi)
         },
         Scale::Raw => (B_DIV, B_MAX_PREC, B_SUFF.to_string()),

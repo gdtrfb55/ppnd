@@ -12,14 +12,14 @@ struct RXStats {
 impl RXStats {
     fn new(stats: &[u64]) -> RXStats {
         RXStats {
-        octets: stats[0],
-        packets: stats[1],
-        errors: stats[2],
-        drops: stats[3],
-        fifo: stats[4],
-        compressed: stats[5],
-        frames: stats[6],
-        multicast: stats[7]
+            octets: stats[0],
+            packets: stats[1],
+            errors: stats[2],
+            drops: stats[3],
+            fifo: stats[4],
+            compressed: stats[5],
+            frames: stats[6],
+            multicast: stats[7]
         }
     }
 }
@@ -38,14 +38,14 @@ struct TXStats {
 impl TXStats {
     fn new(stats: &[u64]) -> TXStats {
         TXStats {
-        octets: stats[0],
-        packets: stats[1],
-        errors: stats[2],
-        drops: stats[3],
-        fifo: stats[4],
-        compressed: stats[5],
-        collisions: stats[6],
-        carrier: stats[7]
+            octets: stats[0],
+            packets: stats[1],
+            errors: stats[2],
+            drops: stats[3],
+            fifo: stats[4],
+            compressed: stats[5],
+            collisions: stats[6],
+            carrier: stats[7]
         }
     }
 }
