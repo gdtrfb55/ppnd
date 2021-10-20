@@ -71,13 +71,10 @@ fn main() {
     const SUCCESS: i32 = 0;
     const FAILURE: i32 = 1;
 
-    match run() {
-        Ok(_) => {
-            process::exit(SUCCESS)
-        },
-        Err(e) => { 
-            eprintln!("\n{}: {}.", WHOAMI, e);
-            process::exit(FAILURE)
-        }
-    }
+    if let Err(e) = run() {
+        eprintln!("\n{}: {}.", WHOAMI, e);
+        process::exit(FAILURE);
+    };
+
+    process::exit(SUCCESS);
 }
