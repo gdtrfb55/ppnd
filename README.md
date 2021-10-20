@@ -54,8 +54,8 @@ RX Compressed              0  |  TX Compressed              0
 RX Frames                  0  |  TX Collisions              0
 RX Multicast           49851  |  TX Carrier                 0
 ```
-I ported it from a Ruby script I wrote and have been using for ages, primarily as a Rust learning exercise.
+I ported this from a Ruby script I wrote and have been using for ages. For me, this is primarily a Rust learning exercise. Hence, I would describe the feature set of this application as complete. Any future changes will be behind the scenes (and invisible to the end user).
 
 If you find it useful, by all means use it.
 
-If you want to change it, by all means change it.
+If you want to change it, by all means fork it and change it. Attribution would be nice, but is not required.
