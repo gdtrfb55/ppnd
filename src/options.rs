@@ -49,9 +49,9 @@ Valid parameters for SCALE are:
 
 fn valid_scale(s: String) -> Result<Scale, String> {
     match s.as_str() {
-        "raw" => Ok(Scale::Raw),
-        "dyn2" => Ok(Scale::Dyn2),
         "dyn10" => Ok(Scale::Dyn10),
+        "dyn2" => Ok(Scale::Dyn2),
+        "raw" => Ok(Scale::Raw),
         "kb" => Ok(Scale::Kilo),
         "mb" => Ok(Scale::Mega),
         "gb" => Ok(Scale::Giga),
@@ -62,7 +62,7 @@ fn valid_scale(s: String) -> Result<Scale, String> {
         "gib" => Ok(Scale::Gibi),
         "tib" => Ok(Scale::Tebi),
         "pib" => Ok(Scale::Pebi),
-        _ => Err(format!("'{}' is not a valid scale value", s)),
+        _ => Err(format!("'{}' is not a valid scale value", s))
     }
 }
 

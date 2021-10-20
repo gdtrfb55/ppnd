@@ -1,7 +1,7 @@
 pub enum Scale {
-  Raw,
-  Dyn2,
   Dyn10,
+  Dyn2,
+  Raw,
   Kilo,
   Mega,
   Giga,
@@ -11,7 +11,7 @@ pub enum Scale {
   Mebi,
   Gibi,
   Tebi,
-  Pebi,
+  Pebi
 }
 
 const fn max_precision_or(sig_digits: usize) -> usize {
@@ -62,33 +62,33 @@ fn scale_format(bytes: u64, scale: &Scale) -> (u64, usize, String) {
   const PIB_SUFF: &str = "PiB";
 
   match scale {
-    Scale::Raw => (B_DIV, B_MAX_PREC, B_SUFF.to_string()),
-    Scale::Dyn2 => if bytes < KIB_DIV {
-      (B_DIV, B_MAX_PREC, B_SUFF.to_string())
-    } else if bytes < MIB_DIV {
-      (KIB_DIV, K_MAX_PREC, KIB_SUFF.to_string())
-    } else if bytes < GIB_DIV {
-      (MIB_DIV, M_MAX_PREC, MIB_SUFF.to_string())
-    } else if bytes < TIB_DIV {
-      (GIB_DIV, G_MAX_PREC, GIB_SUFF.to_string())
-    } else if bytes < PIB_DIV {
-      (TIB_DIV, T_MAX_PREC, TIB_SUFF.to_string())
-    } else {
-      (PIB_DIV, P_MAX_PREC, PIB_SUFF.to_string())
-    },
     Scale::Dyn10 => if bytes < KB_DIV {
-      (B_DIV, B_MAX_PREC, B_SUFF.to_string())
-    } else if bytes < MIB_DIV {
-      (KB_DIV, K_MAX_PREC, KB_SUFF.to_string())
-    } else if bytes < GIB_DIV {
-      (MB_DIV, M_MAX_PREC, MB_SUFF.to_string())
-    } else if bytes < TIB_DIV {
-      (GB_DIV, G_MAX_PREC, GB_SUFF.to_string())
-    } else if bytes < PIB_DIV {
-      (TB_DIV, T_MAX_PREC, TB_SUFF.to_string())
+      scale_format(bytes, &Scale::Raw)
+    } else if bytes < MB_DIV {
+      scale_format(bytes, &Scale::Kilo)
+    } else if bytes < GB_DIV {
+      scale_format(bytes, &Scale::Mega)
+    } else if bytes < TB_DIV {
+      scale_format(bytes, &Scale::Giga)
+    } else if bytes < PB_DIV {
+      scale_format(bytes, &Scale::Tera)
     } else {
-      (PB_DIV, P_MAX_PREC, PB_SUFF.to_string())
-    }, 
+      scale_format(bytes, &Scale::Peta)
+    },
+    Scale::Dyn2 => if bytes < KIB_DIV {
+      scale_format(bytes, &Scale::Raw)
+    } else if bytes < MIB_DIV {
+      scale_format(bytes, &Scale::Kibi)
+    } else if bytes < GIB_DIV {
+      scale_format(bytes, &Scale::Mebi)
+    } else if bytes < TIB_DIV {
+      scale_format(bytes, &Scale::Gibi)
+    } else if bytes < PIB_DIV {
+      scale_format(bytes, &Scale::Tebi)
+    } else {
+      scale_format(bytes, &Scale::Pebi)
+    },
+    Scale::Raw => (B_DIV, B_MAX_PREC, B_SUFF.to_string()),
     Scale::Kilo => (KB_DIV, K_MAX_PREC, KB_SUFF.to_string()),
     Scale::Mega => (MB_DIV, M_MAX_PREC, MB_SUFF.to_string()),
     Scale::Giga => (GB_DIV, G_MAX_PREC, GB_SUFF.to_string()),
