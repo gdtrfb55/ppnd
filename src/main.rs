@@ -43,7 +43,7 @@ fn run() -> Result<(), String> {
     let opts = options::get()?;
     let if_line = ifregex::build()?;
     let mut count = opts.repeat;
-    let show_time = count > 2;
+    let show_time = count > 1;
     let mut stats: IFStats;
  
     loop {
