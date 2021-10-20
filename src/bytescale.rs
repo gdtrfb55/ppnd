@@ -20,7 +20,7 @@ const fn max_precision_or(sig_digits: usize) -> usize {
   if sig_digits > MAX_PRECISION { MAX_PRECISION } else { sig_digits }
 }
 
-fn scale_format(count: u64, scale: &Scale) -> (u64, usize, String) {
+fn scale_format(bytes: u64, scale: &Scale) -> (u64, usize, String) {
   const B_MAX_PREC: usize = 0;
   const K_MAX_PREC: usize = max_precision_or(3);
   const M_MAX_PREC: usize = max_precision_or(6);
@@ -63,28 +63,28 @@ fn scale_format(count: u64, scale: &Scale) -> (u64, usize, String) {
 
   match scale {
     Scale::Raw => (B_DIV, B_MAX_PREC, B_SUFF.to_string()),
-    Scale::Dyn2 => if count < KIB_DIV {
+    Scale::Dyn2 => if bytes < KIB_DIV {
       (B_DIV, B_MAX_PREC, B_SUFF.to_string())
-    } else if count < MIB_DIV {
+    } else if bytes < MIB_DIV {
       (KIB_DIV, K_MAX_PREC, KIB_SUFF.to_string())
-    } else if count < GIB_DIV {
+    } else if bytes < GIB_DIV {
       (MIB_DIV, M_MAX_PREC, MIB_SUFF.to_string())
-    } else if count < TIB_DIV {
+    } else if bytes < TIB_DIV {
       (GIB_DIV, G_MAX_PREC, GIB_SUFF.to_string())
-    } else if count < PIB_DIV {
+    } else if bytes < PIB_DIV {
       (TIB_DIV, T_MAX_PREC, TIB_SUFF.to_string())
     } else {
       (PIB_DIV, P_MAX_PREC, PIB_SUFF.to_string())
     },
-    Scale::Dyn10 => if count < KB_DIV {
+    Scale::Dyn10 => if bytes < KB_DIV {
       (B_DIV, B_MAX_PREC, B_SUFF.to_string())
-    } else if count < MIB_DIV {
+    } else if bytes < MIB_DIV {
       (KB_DIV, K_MAX_PREC, KB_SUFF.to_string())
-    } else if count < GIB_DIV {
+    } else if bytes < GIB_DIV {
       (MB_DIV, M_MAX_PREC, MB_SUFF.to_string())
-    } else if count < TIB_DIV {
+    } else if bytes < TIB_DIV {
       (GB_DIV, G_MAX_PREC, GB_SUFF.to_string())
-    } else if count < PIB_DIV {
+    } else if bytes < PIB_DIV {
       (TB_DIV, T_MAX_PREC, TB_SUFF.to_string())
     } else {
       (PB_DIV, P_MAX_PREC, PB_SUFF.to_string())
@@ -102,8 +102,8 @@ fn scale_format(count: u64, scale: &Scale) -> (u64, usize, String) {
   }
 }
 
-pub fn scale(count: u64, scale: &Scale, requested_prec: usize) -> String {
-  let (div, usable_prec, suff) = scale_format(count, scale);
-  let scaled = count as f64 / div as f64;
+pub fn scale(bytes: u64, scale: &Scale, requested_prec: usize) -> String {
+  let (div, usable_prec, suff) = scale_format(bytes, scale);
+  let scaled = bytes as f64 / div as f64;
   format!("{0:.1$} {2}", scaled, std::cmp::min(usable_prec, requested_prec), suff)
 }
