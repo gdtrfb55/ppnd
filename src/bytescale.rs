@@ -14,9 +14,9 @@ pub enum Scale {
   Pebi,
 }
 
-pub const MAX_PRECISION: usize = 8;
-
 const fn max_precision_or(sig_digits: usize) -> usize {
+  use crate::options::MAX_PRECISION;
+  
   if sig_digits > MAX_PRECISION { MAX_PRECISION } else { sig_digits }
 }
 

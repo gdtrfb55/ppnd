@@ -3,7 +3,7 @@ extern crate getopts;
 use std::env;
 use getopts::Options;
 use std::time::Duration;
-use crate::bytescale::{Scale, MAX_PRECISION};
+use crate::bytescale::Scale;
 
 pub struct CLOptions {
     pub show_lo: bool,
@@ -12,6 +12,8 @@ pub struct CLOptions {
     pub repeat: u16,
     pub delay: Duration
 }
+
+pub const MAX_PRECISION: usize = 8;
 
 fn precision_opt_help() -> String {
     format!("precision of scaled byte count (0-{})\n(default: 3)", MAX_PRECISION)
