@@ -21,9 +21,9 @@ Options:
 
 Valid parameters for SCALE are:
     
-'raw' = raw byte count
 'dyn10' = dynamic power-of-10 scaling (KB, MB, GB, etc.)
 'dyn2' = dynamic power-of-2 scaling (KiB, MiB, GiB, etc.)
+'raw' = raw byte count
 'kb', 'mb', 'gb', 'tb', or 'pb' = fixed scaling (power-of-10)
 'kib', 'mib', 'gib', 'tib' or 'pib' = fixed scaling (power-of-2)
 ```
