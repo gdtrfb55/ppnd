@@ -6,23 +6,11 @@ use std::time::Duration;
 use crate::bytescale::Scale;
 
 pub struct CLOptions {
-    pub minime: String,
     pub show_lo: bool,
     pub scale: Scale,
     pub precision: usize,
     pub repeat: u16,
     pub delay: Duration
-}
-
-fn basename(argv_name: &str) -> Result<String, String> {
-    use std::path::Path;
-
-    if let Some(n) = Path::new(argv_name).file_name() {
-        if let Some(b) = n.to_str() {
-            return Ok(b.to_string())
-        };
-    };
-    Err("could not obtain program name from argv".to_string())
 }
 
 pub const MAX_PRECISION: usize = 8;
@@ -44,6 +32,8 @@ fn delay_opt_help() -> String {
 }
 
 fn show_help_and_exit(opts: &Options) {
+    use crate::PROGNAME;
+
     const SCALE_PARAMS: &str = "
 Valid parameters for SCALE are:
     
@@ -56,8 +46,16 @@ Valid parameters for SCALE are:
 'kib', 'mib', 'gib', 'tib' or 'pib' = fixed power-of-2 scaling
     ";
 
-    print!("{}", opts.usage("\nppnd 0.9.9 -- a prettier /proc/net/dev"));
+    print!("{}", opts.usage(&format!("\nUsage: {} [OPTION]...", PROGNAME)));
     print!("{}", SCALE_PARAMS);
+    std::process::exit(0);
+}
+
+fn show_version_and_exit() {
+    use crate::{PROGNAME, PROGVERS, YADAYADA};
+
+    println!("\n{} {} -- a prettier /proc/net/dev", PROGNAME, PROGVERS);
+    print!("{}", YADAYADA);
     std::process::exit(0);
 }
 
@@ -102,20 +100,21 @@ fn valid_delay(s: String) -> Result<u64, String> {
 }
 
 pub fn get() -> Result<CLOptions, String> {
-    let mut args: Vec<String> = env::args().collect();
-    let minime = basename(&args.remove(0))?;
+    let args: Vec<String> = env::args().collect();
     let mut opts = Options::new();
     opts.optflag("l", "show-lo", "show loopback interface in list\n(default: hide loopback)");
     opts.optopt("s", "scale", "scaling factor for byte count\n(default: dyn10)", "SCALE");
     opts.optopt("p", "precision", &precision_opt_help(), "PRECISION");
     opts.optopt("r", "repeat", &repeat_opt_help(), "COUNT");
     opts.optopt("d", "delay", &delay_opt_help(), "SECONDS");
-    opts.optflag("h", "help", "show this help");
+    opts.optflag("h", "help", "show this help and exit");
+    opts.optflag("v", "version", "show version information and exit");
     let matches = match opts.parse(&args) {
         Ok(m) => { m }
         Err(e) => return Err(e.to_string())
     };
     if matches.opt_present("h") { show_help_and_exit(&opts) };
+    if matches.opt_present("v") { show_version_and_exit() }
     let show_lo = matches.opt_present("l");
     let scale = match matches.opt_str("s") {
         Some(s) => valid_scale(s)?,
@@ -133,5 +132,5 @@ pub fn get() -> Result<CLOptions, String> {
         Some(p) => Duration::from_secs(valid_delay(p)?),
         None => Duration::from_secs(5)
     };
-    Ok(CLOptions { minime, show_lo, scale, precision, repeat, delay })
+    Ok(CLOptions { show_lo, scale, precision, repeat, delay })
 }

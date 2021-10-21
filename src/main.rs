@@ -1,3 +1,22 @@
+static PROGNAME: &str = "ppnd";
+static PROGVERS: &str = "0.9.9";
+static YADAYADA: &str = "
+Copyright: (c) 2021 Jack Browning <gdtrfb55@gmail.com>.
+
+This program is FREE SOFTWARE: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
+";
+
 mod options;
 mod ifstats;
 mod bytescale;
@@ -67,12 +86,11 @@ fn run() -> Result<(), String> {
 fn main() {
     use std::process;
 
-    const WHOAMI: &str = "ppnd";
     const SUCCESS: i32 = 0;
     const FAILURE: i32 = 1;
 
     if let Err(e) = run() {
-        eprintln!("\n{}: {}.", WHOAMI, e);
+        eprintln!("\n{}: {}.", PROGNAME, e);
         process::exit(FAILURE);
     };
 
