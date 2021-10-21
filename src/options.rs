@@ -17,9 +17,7 @@ pub struct CLOptions {
 fn basename(argv_name: &str) -> Result<String, String> {
     use std::path::Path;
 
-    let p = Path::new(argv_name);
-
-    if let Some(n) = p.file_name() {
+    if let Some(n) = Path::new(argv_name).file_name() {
         if let Some(b) = n.to_str() {
             return Ok(b.to_string())
         };
