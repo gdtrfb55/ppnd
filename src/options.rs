@@ -6,11 +6,25 @@ use std::time::Duration;
 use crate::bytescale::Scale;
 
 pub struct CLOptions {
+    pub minime: String,
     pub show_lo: bool,
     pub scale: Scale,
     pub precision: usize,
     pub repeat: u16,
     pub delay: Duration
+}
+
+fn basename(argv_name: &str) -> Result<String, String> {
+    use std::path::Path;
+
+    let p = Path::new(argv_name);
+
+    if let Some(n) = p.file_name() {
+        if let Some(b) = n.to_str() {
+            return Ok(b.to_string())
+        };
+    };
+    Err("could not obtain program name from argv".to_string())
 }
 
 pub const MAX_PRECISION: usize = 8;
@@ -91,7 +105,7 @@ fn valid_delay(s: String) -> Result<u64, String> {
 
 pub fn get() -> Result<CLOptions, String> {
     let mut args: Vec<String> = env::args().collect();
-    let _minime = args.remove(0);
+    let minime = basename(&args.remove(0))?;
     let mut opts = Options::new();
     opts.optflag("l", "show-lo", "show loopback interface in list\n(default: hide loopback)");
     opts.optopt("s", "scale", "scaling factor for byte count\n(default: dyn10)", "SCALE");
@@ -121,5 +135,5 @@ pub fn get() -> Result<CLOptions, String> {
         Some(p) => Duration::from_secs(valid_delay(p)?),
         None => Duration::from_secs(5)
     };
-    Ok(CLOptions { show_lo, scale, precision, repeat, delay })
+    Ok(CLOptions { minime, show_lo, scale, precision, repeat, delay })
 }
