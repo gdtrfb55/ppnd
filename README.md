@@ -3,7 +3,7 @@
 Not much magic here. This application reads /proc/net/dev and returns its contents in a neat and concise format. It offers scaling and precision options for the
 byte counts emitted by /proc/net/dev, and has the ability to repeatedly read /proc/net/dev (with a user-configurable delay between reads). Here is the output from `ppnd -h`:
 ```
-ppnd 0.9.9 -- a prettier /proc/net/dev
+Usage: ppnd [OPTION]...
 
 Options:
     -l, --show-lo       show loopback interface in list
@@ -17,15 +17,18 @@ Options:
                         (default: 1)
     -d, --delay SECONDS delay between queries in SECONDS (1-60)
                         (default: 5)
-    -h, --help          show this help
+    -h, --help          show this help and exit
+    -v, --version       show version information and exit
 
 Valid parameters for SCALE are:
     
-'dyn10' = dynamic power-of-10 scaling (KB, MB, GB, etc.)
-'dyn2' = dynamic power-of-2 scaling (KiB, MiB, GiB, etc.)
 'raw' = raw byte count
-'kb', 'mb', 'gb', 'tb', or 'pb' = fixed scaling (power-of-10)
-'kib', 'mib', 'gib', 'tib' or 'pib' = fixed scaling (power-of-2)
+
+'dyn10' = dynamic power-of-10 scaling (kB = 1000 bytes)
+'kb', 'mb', 'gb', 'tb', or 'pb' = fixed power-of-10 scaling
+
+'dyn2' = dynamic power-of-2 scaling (KiB = 1024 bytes)
+'kib', 'mib', 'gib', 'tib' or 'pib' = fixed power-of-2 scaling
 ```
 And, here is some sample output from the application itself:
 ```
