@@ -2,7 +2,7 @@
 *   This file is part of the ppnd distribution, which can be found at 
 *   <https://github.com/gdtrfb55/ppnd>.
 *
-*   Copyright: (c) 2021 Jack Browning.
+*   Copyright (C) 2021 Jack Browning.
 *
 *   This program is FREE SOFTWARE: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
 static PROGNAME: &str = "ppnd";
 static PROGVERS: &str = "0.9.9";
 static YADAYADA: &str = "
-Copyright: (c) 2021 Jack Browning.
+Copyright (C) 2021 Jack Browning.
 
 This program is FREE SOFTWARE: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
