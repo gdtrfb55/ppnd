@@ -61,4 +61,6 @@ I ported this from a Ruby script I wrote (and have been using for ages). For me,
 
 If you find it useful, by all means use it.
 
-If you want to change it, by all means fork it and change it. Attribution would be nice, but is not required.
+If you want to change it, by all means fork it and change it.
+
+This software is licensed under Version 3 of the GNU General Public License (or later).
