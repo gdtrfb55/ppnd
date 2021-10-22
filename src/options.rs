@@ -118,8 +118,14 @@ fn valid_delay(s: String) -> Result<u64, String> {
 }
 
 pub fn get() -> Result<CLOptions, String> {
+    const DEFAULT_SCALE: Scale = Scale::Dyn10;
+    const DEFAULT_PRECISION: usize = 3;
+    const DEFAULT_REPEAT: u16 = 1;
+    const DEFAULT_DELAY: Duration = Duration::from_secs(5);
+
     let args: Vec<String> = env::args().collect();
     let mut opts = Options::new();
+    
     opts.optflag("l", "show-lo", "show loopback interface in list\n(default: hide loopback)");
     opts.optopt("s", "scale", "scaling factor for byte count\n(default: dyn10)", "SCALE");
     opts.optopt("p", "precision", &precision_opt_help(), "PRECISION");
@@ -127,28 +133,31 @@ pub fn get() -> Result<CLOptions, String> {
     opts.optopt("d", "delay", &delay_opt_help(), "SECONDS");
     opts.optflag("h", "help", "show this help and exit");
     opts.optflag("v", "version", "show version information and exit");
+    
     let matches = match opts.parse(&args) {
         Ok(m) => { m }
         Err(e) => return Err(e.to_string())
     };
+    
     if matches.opt_present("h") { show_help_and_exit(&opts) };
     if matches.opt_present("v") { show_version_and_exit() }
     let show_lo = matches.opt_present("l");
     let scale = match matches.opt_str("s") {
         Some(s) => valid_scale(s)?,
-        None => Scale::Dyn10
+        None => DEFAULT_SCALE
     };
     let precision = match matches.opt_str("p") {
         Some(p) => valid_precision(p)?,
-        None => 3
+        None => DEFAULT_PRECISION
     };
     let repeat = match matches.opt_str("r") {
         Some(p) => valid_repeat(p)?,
-        None => 1
+        None => DEFAULT_REPEAT
     };
     let delay = match matches.opt_str("d") {
         Some(p) => Duration::from_secs(valid_delay(p)?),
-        None => Duration::from_secs(5)
+        None => DEFAULT_DELAY
     };
+
     Ok(CLOptions { show_lo, scale, precision, repeat, delay })
 }
