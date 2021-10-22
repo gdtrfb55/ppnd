@@ -75,7 +75,7 @@ mod timestamp {
 fn run() -> Result<(), String> {
     use crate::ifstats::IFStats;
 
-    const LOCAL_IF: &str = "lo:";
+    const LOOPBACK: &str = "lo:";
 
     let opts = options::get()?;
     let interface_line = ifregex::build()?;
@@ -89,7 +89,7 @@ fn run() -> Result<(), String> {
         for line in netdev::read()?.lines() {
             if interface_line.is_match(line) {
                 stats = ifstats::new(line)?;
-                if (stats.name != LOCAL_IF) || opts.show_lo {
+                if (stats.name != LOOPBACK) || opts.show_lo {
                     stats.print(&opts.scale, opts.precision)
                 };
             };
