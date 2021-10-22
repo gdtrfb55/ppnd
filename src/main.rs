@@ -72,26 +72,31 @@ mod timestamp {
     }
 }
 
-fn run() -> Result<(), String> {
-    use crate::ifstats::IFStats;
-    
-    const IF_LO: &str = r"lo:";
+use crate::options::CLOptions;
 
+fn print_interface_stats(line: &str, opts: &CLOptions) -> Result<(), String> {
+    const LOCAL_IF: &str = "lo:";
+
+    let stats = ifstats::new(&line)?;
+    let printable = (stats.name != LOCAL_IF) || opts.show_lo;
+    
+    if printable { stats.print(&opts.scale, opts.precision); }
+
+    Ok(())
+}
+
+fn run() -> Result<(), String> {
     let opts = options::get()?;
-    let if_line = ifregex::build()?;
+    let interface_line = ifregex::build()?;
     let mut count = opts.repeat;
-    let show_time = count > 1;
-    let mut stats: IFStats;
+    let repeating = count > 1;
  
     loop {
         count -= 1;
-        if show_time { timestamp::print() };
-        for netdev_line in netdev::read()?.lines() {
-            if if_line.is_match(netdev_line) {
-                stats = ifstats::new(netdev_line)?;
-                if (stats.name != IF_LO) || (opts.show_lo == true) {
-                    stats.print(&opts.scale, opts.precision);
-                };
+        if repeating { timestamp::print() };
+        for line in netdev::read()?.lines() {
+            if interface_line.is_match(line) {
+                print_interface_stats(line, &opts)?;
             };
         };
         if count == 0 { break };
