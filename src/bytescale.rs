@@ -120,6 +120,25 @@ fn scale_format(bytes: u64, scale: &Scale) -> (u64, usize, String) {
     }
 }
 
+pub fn valid(s: String) -> Result<Scale, String> {
+    match s.as_str() {
+        "dyn10" => Ok(Scale::Dyn10),
+        "dyn2" => Ok(Scale::Dyn2),
+        "raw" => Ok(Scale::Raw),
+        "kb" => Ok(Scale::Kilo),
+        "mb" => Ok(Scale::Mega),
+        "gb" => Ok(Scale::Giga),
+        "tb" => Ok(Scale::Tera),
+        "pb" => Ok(Scale::Peta),
+        "kib" => Ok(Scale::Kibi),
+        "mib" => Ok(Scale::Mebi),
+        "gib" => Ok(Scale::Gibi),
+        "tib" => Ok(Scale::Tebi),
+        "pib" => Ok(Scale::Pebi),
+        _ => Err(format!("'{}' is not a valid scale value", s))
+    }
+}
+
 pub fn scale(bytes: u64, scale: &Scale, requested_prec: usize) -> String {
     let (div, usable_prec, suff) = scale_format(bytes, scale);
     let scaled = bytes as f64 / div as f64;

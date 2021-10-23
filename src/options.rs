@@ -21,6 +21,7 @@ extern crate getopts;
 use std::env;
 use getopts::Options;
 use std::time::Duration;
+use crate::bytescale;
 use crate::bytescale::Scale;
 
 pub struct CLOptions {
@@ -77,24 +78,24 @@ fn show_version_and_exit() {
     std::process::exit(0);
 }
 
-fn valid_scale(s: String) -> Result<Scale, String> {
-    match s.as_str() {
-        "dyn10" => Ok(Scale::Dyn10),
-        "dyn2" => Ok(Scale::Dyn2),
-        "raw" => Ok(Scale::Raw),
-        "kb" => Ok(Scale::Kilo),
-        "mb" => Ok(Scale::Mega),
-        "gb" => Ok(Scale::Giga),
-        "tb" => Ok(Scale::Tera),
-        "pb" => Ok(Scale::Peta),
-        "kib" => Ok(Scale::Kibi),
-        "mib" => Ok(Scale::Mebi),
-        "gib" => Ok(Scale::Gibi),
-        "tib" => Ok(Scale::Tebi),
-        "pib" => Ok(Scale::Pebi),
-        _ => Err(format!("'{}' is not a valid scale value", s))
-    }
-}
+// fn valid_scale(s: String) -> Result<Scale, String> {
+//     match s.as_str() {
+//         "dyn10" => Ok(Scale::Dyn10),
+//         "dyn2" => Ok(Scale::Dyn2),
+//         "raw" => Ok(Scale::Raw),
+//         "kb" => Ok(Scale::Kilo),
+//         "mb" => Ok(Scale::Mega),
+//         "gb" => Ok(Scale::Giga),
+//         "tb" => Ok(Scale::Tera),
+//         "pb" => Ok(Scale::Peta),
+//         "kib" => Ok(Scale::Kibi),
+//         "mib" => Ok(Scale::Mebi),
+//         "gib" => Ok(Scale::Gibi),
+//         "tib" => Ok(Scale::Tebi),
+//         "pib" => Ok(Scale::Pebi),
+//         _ => Err(format!("'{}' is not a valid scale value", s))
+//     }
+// }
 
 fn valid_precision(s: String) -> Result<usize, String> {
     if let Ok(p) = s.parse() {
@@ -143,7 +144,7 @@ pub fn get() -> Result<CLOptions, String> {
     if matches.opt_present("v") { show_version_and_exit() }
     let show_lo = matches.opt_present("l");
     let scale = match matches.opt_str("s") {
-        Some(s) => valid_scale(s)?,
+        Some(s) => bytescale::valid(s)?,
         None => DEFAULT_SCALE
     };
     let precision = match matches.opt_str("p") {
