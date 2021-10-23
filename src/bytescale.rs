@@ -38,7 +38,7 @@ const fn max_precision_or(sig_digits: usize) -> usize {
     if sig_digits > MAX_PRECISION { MAX_PRECISION } else { sig_digits }
 }
 
-fn scale_format(bytes: u64, scale: &Scale) -> (u64, usize, String) {
+fn scale_format(count: u64, scale: &Scale) -> (u64, usize, String) {
     const B_MAX_PREC: usize = 0;
     const K_MAX_PREC: usize = max_precision_or(3);
     const M_MAX_PREC: usize = max_precision_or(6);
@@ -80,31 +80,31 @@ fn scale_format(bytes: u64, scale: &Scale) -> (u64, usize, String) {
     const PIB_SUFF: &str = "PiB";
 
     match scale {
-        Scale::Dyn10 => if bytes < KB_DIV {
-            scale_format(bytes, &Scale::Raw)
-        } else if bytes < MB_DIV {
-            scale_format(bytes, &Scale::Kilo)
-        } else if bytes < GB_DIV {
-            scale_format(bytes, &Scale::Mega)
-        } else if bytes < TB_DIV {
-            scale_format(bytes, &Scale::Giga)
-        } else if bytes < PB_DIV {
-            scale_format(bytes, &Scale::Tera)
+        Scale::Dyn10 => if count < KB_DIV {
+            scale_format(count, &Scale::Raw)
+        } else if count < MB_DIV {
+            scale_format(count, &Scale::Kilo)
+        } else if count < GB_DIV {
+            scale_format(count, &Scale::Mega)
+        } else if count < TB_DIV {
+            scale_format(count, &Scale::Giga)
+        } else if count < PB_DIV {
+            scale_format(count, &Scale::Tera)
         } else {
-            scale_format(bytes, &Scale::Peta)
+            scale_format(count, &Scale::Peta)
         },
-        Scale::Dyn2 => if bytes < KIB_DIV {
-            scale_format(bytes, &Scale::Raw)
-        } else if bytes < MIB_DIV {
-            scale_format(bytes, &Scale::Kibi)
-        } else if bytes < GIB_DIV {
-            scale_format(bytes, &Scale::Mebi)
-        } else if bytes < TIB_DIV {
-            scale_format(bytes, &Scale::Gibi)
-        } else if bytes < PIB_DIV {
-            scale_format(bytes, &Scale::Tebi)
+        Scale::Dyn2 => if count < KIB_DIV {
+            scale_format(count, &Scale::Raw)
+        } else if count < MIB_DIV {
+            scale_format(count, &Scale::Kibi)
+        } else if count < GIB_DIV {
+            scale_format(count, &Scale::Mebi)
+        } else if count < TIB_DIV {
+            scale_format(count, &Scale::Gibi)
+        } else if count < PIB_DIV {
+            scale_format(count, &Scale::Tebi)
         } else {
-            scale_format(bytes, &Scale::Pebi)
+            scale_format(count, &Scale::Pebi)
         },
         Scale::Raw => (B_DIV, B_MAX_PREC, B_SUFF.to_string()),
         Scale::Kilo => (KB_DIV, K_MAX_PREC, KB_SUFF.to_string()),
@@ -139,8 +139,8 @@ pub fn valid(s: String) -> Result<Scale, String> {
     }
 }
 
-pub fn scale(bytes: u64, scale: &Scale, requested_prec: usize) -> String {
-    let (div, usable_prec, suff) = scale_format(bytes, scale);
-    let scaled = bytes as f64 / div as f64;
+pub fn scale(count: u64, scale: &Scale, requested_prec: usize) -> String {
+    let (div, usable_prec, suff) = scale_format(count, scale);
+    let scaled = count as f64 / div as f64;
     format!("{0:.1$} {2}", scaled, std::cmp::min(usable_prec, requested_prec), suff)
 }
