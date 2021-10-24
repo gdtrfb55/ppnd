@@ -28,7 +28,7 @@ struct RXStats {
 }
 
 impl RXStats {
-    fn new(stats: &[u64]) -> RXStats {
+    fn splat(stats: &[u64]) -> RXStats {
         RXStats {
             octets: stats[0],
             packets: stats[1],
@@ -54,7 +54,7 @@ struct TXStats {
 }
 
 impl TXStats {
-    fn new(stats: &[u64]) -> TXStats {
+    fn splat(stats: &[u64]) -> TXStats {
         TXStats {
             octets: stats[0],
             packets: stats[1],
@@ -78,7 +78,7 @@ pub struct IFStats {
 use crate::bytescale::{Scale, scale_bytes};
 
 impl IFStats {
-    fn new(name: String, width: usize, rx: RXStats, tx: TXStats) -> IFStats {
+    fn splat(name: String, width: usize, rx: RXStats, tx: TXStats) -> IFStats {
         IFStats { name, width, rx, tx }
     }
 
@@ -129,7 +129,7 @@ pub fn new(netdev_line: &str) -> Result<IFStats, String> {
     let mut if_fields = parse(netdev_line);
     let if_name = if_fields.remove(0);
     let (width, raw_stats) = convert(&if_fields)?;
-    let rx_stats = RXStats::new(&raw_stats[..8]);
-    let tx_stats = TXStats::new(&raw_stats[8..]);
-    Ok(IFStats::new(if_name.to_string(), width, rx_stats, tx_stats))
+    let rx_stats = RXStats::splat(&raw_stats[..8]);
+    let tx_stats = TXStats::splat(&raw_stats[8..]);
+    Ok(IFStats::splat(if_name.to_string(), width, rx_stats, tx_stats))
 }
