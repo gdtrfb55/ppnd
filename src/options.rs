@@ -21,7 +21,6 @@ extern crate getopts;
 use std::env;
 use getopts::Options;
 use std::time::Duration;
-// use crate::bytescale::{Scale, valid_scale};
 use crate::bytescale::Scale;
 
 pub struct CLOptions {
