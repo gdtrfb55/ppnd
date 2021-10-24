@@ -102,12 +102,6 @@ impl IFStats {
     }
 }
 
-fn parse(netdev_line: &str) -> Vec<&str> {
-    netdev_line
-        .split_whitespace()
-        .collect()
-}
-
 fn field_to_u64(field: &str) -> Result<u64, String> {
     if let Ok(f) = field.parse::<u64>() { return Ok(f) };
     Err("error parsing /proc/net/dev interface data".to_string())
@@ -126,7 +120,7 @@ fn convert(if_fields: &Vec<&str>) -> Result<(usize, Vec<u64>), String> {
 }
 
 pub fn new(netdev_line: &str) -> Result<IFStats, String> {
-    let mut if_fields = parse(netdev_line);
+    let mut if_fields = netdev_line.split_whitespace().collect();
     let if_name = if_fields.remove(0);
     let (width, raw_stats) = convert(&if_fields)?;
     let rx_stats = RXStats::splat(&raw_stats[..8]);
