@@ -21,7 +21,8 @@ extern crate getopts;
 use std::env;
 use getopts::Options;
 use std::time::Duration;
-use crate::bytescale::{Scale, valid_scale};
+// use crate::bytescale::{Scale, valid_scale};
+use crate::bytescale::Scale;
 
 pub struct CLOptions {
     pub show_lo: bool,
@@ -124,7 +125,7 @@ pub fn get() -> Result<CLOptions, String> {
     if matches.opt_present("v") { show_version_and_exit() }
     let show_lo = matches.opt_present("l");
     let scale = match matches.opt_str("s") {
-        Some(s) => valid_scale(s)?,
+        Some(s) => Scale::valid(s)?,
         None => DEFAULT_SCALE
     };
     let precision = match matches.opt_str("p") {
