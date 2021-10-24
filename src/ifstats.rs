@@ -82,9 +82,9 @@ impl IFStats {
         IFStats { name, width, rx, tx }
     }
 
-    pub fn print(mut self: Self, divisor: &Scale, precision: usize) {
-        let scaled_rx = scale_bytes(self.rx.octets, divisor, precision);
-        let scaled_tx = scale_bytes(self.tx.octets, divisor, precision);
+    pub fn print(mut self: Self, scale: &Scale, precision: usize) {
+        let scaled_rx = scale_bytes(self.rx.octets, scale, precision);
+        let scaled_tx = scale_bytes(self.tx.octets, scale, precision);
         let rx_len = scaled_rx.len();
         let tx_len = scaled_tx.len();
         if rx_len > self.width { self.width = rx_len };
