@@ -140,7 +140,7 @@ pub fn valid_scale(s: String) -> Result<Scale, String> {
 }
 
 pub fn scale_bytes(count: u64, scale: &Scale, requested_prec: usize) -> String {
-    let (div, usable_prec, suff) = scale_format(count, scale);
-    let scaled = count as f64 / div as f64;
-    format!("{0:.1$} {2}", scaled, std::cmp::min(usable_prec, requested_prec), suff)
+    let (divisor, usable_prec, suffix) = scale_format(count, scale);
+    let scaled = count as f64 / divisor as f64;
+    format!("{0:.1$} {2}", scaled, std::cmp::min(usable_prec, requested_prec), suffix)
 }
