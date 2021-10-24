@@ -107,11 +107,11 @@ fn field_to_u64(field: &str) -> Result<u64, String> {
     Err("error parsing /proc/net/dev interface data".to_string())
 }
 
-fn convert(if_fields: &Vec<&str>) -> Result<(usize, Vec<u64>), String> {
+fn convert(interface_fields: &Vec<&str>) -> Result<(usize, Vec<u64>), String> {
     let mut len: usize;
     let mut width: usize = 0;
-    let mut stats: Vec<u64> = Vec::with_capacity(if_fields.len());
-    for f in if_fields {
+    let mut stats: Vec<u64> = Vec::with_capacity(interface_fields.len());
+    for f in interface_fields {
         len = f.len();
         if len > width { width = len };
         stats.push(field_to_u64(f)?);
@@ -120,10 +120,10 @@ fn convert(if_fields: &Vec<&str>) -> Result<(usize, Vec<u64>), String> {
 }
 
 pub fn new(netdev_line: &str) -> Result<IFStats, String> {
-    let mut if_fields: Vec<&str> = netdev_line.split_whitespace().collect();
-    let if_name = if_fields.remove(0);
-    let (width, raw_stats) = convert(&if_fields)?;
-    let rx_stats = RXStats::splat(&raw_stats[..8]);
-    let tx_stats = TXStats::splat(&raw_stats[8..]);
-    Ok(IFStats::splat(if_name.to_string(), width, rx_stats, tx_stats))
+    let mut interface_fields: Vec<&str> = netdev_line.split_whitespace().collect();
+    let interface_name = interface_fields.remove(0);
+    let (width, interface_stats) = convert(&interface_fields)?;
+    let rx_stats = RXStats::splat(&interface_stats[..8]);
+    let tx_stats = TXStats::splat(&interface_stats[8..]);
+    Ok(IFStats::splat(interface_name.to_string(), width, rx_stats, tx_stats))
 }
