@@ -120,7 +120,7 @@ fn convert(if_fields: &Vec<&str>) -> Result<(usize, Vec<u64>), String> {
 }
 
 pub fn new(netdev_line: &str) -> Result<IFStats, String> {
-    let mut if_fields = netdev_line.split_whitespace().collect();
+    let mut if_fields: Vec<&str> = netdev_line.split_whitespace().collect();
     let if_name = if_fields.remove(0);
     let (width, raw_stats) = convert(&if_fields)?;
     let rx_stats = RXStats::splat(&raw_stats[..8]);
