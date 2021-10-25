@@ -79,7 +79,7 @@ pub enum Scale {
 }
 
 impl Scale {
-    pub fn valid(s: String) -> Result<Scale, String> {
+    pub fn str_to_scale(s: String) -> Result<Scale, String> {
         match s.as_str() {
             "dyn10" => Ok(Scale::Dyn10),
             "dyn2" => Ok(Scale::Dyn2),

@@ -124,7 +124,7 @@ pub fn get() -> Result<CLOptions, String> {
     if matches.opt_present("v") { show_version_and_exit() }
     let show_lo = matches.opt_present("l");
     let scale = match matches.opt_str("s") {
-        Some(s) => Scale::valid(s)?,
+        Some(s) => Scale::str_to_scale(s)?,
         None => DEFAULT_SCALE
     };
     let precision = match matches.opt_str("p") {
