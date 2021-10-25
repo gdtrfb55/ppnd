@@ -81,7 +81,7 @@ pub enum Scale {
 impl Scale {
     pub const DEFAULT: Scale = Scale::Dyn10;
 
-    pub fn str_to_scale(s: String) -> Result<Scale, String> {
+    pub fn from_string(s: String) -> Result<Scale, String> {
         match s.as_str() {
             "dyn10" => Ok(Scale::Dyn10),
             "dyn2" => Ok(Scale::Dyn2),

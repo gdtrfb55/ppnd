@@ -37,7 +37,7 @@ impl Precision {
     const DEFAULT: usize = 3;
     pub const MAX: usize = 8;
 
-    fn str_to_precision(s: String) -> Result<usize, String> {
+    fn from_string(s: String) -> Result<usize, String> {
         if let Ok(p) = s.parse() {
             if p <= Self::MAX { return Ok(p) }
         };
@@ -55,7 +55,7 @@ impl Repeat {
     const DEFAULT: u16 = 1;
     const MAX: u16 = 60;
 
-    fn str_to_repeat(s: String) -> Result<u16, String> {
+    fn from_string(s: String) -> Result<u16, String> {
         if let Ok(p) = s.parse() {
             if (p > 0) && (p <= Self::MAX) { return Ok(p) }
         };
@@ -73,7 +73,7 @@ impl Delay {
     const DEFAULT: Duration = Duration::from_secs(5);
     const MAX: u64 = 60;
 
-    fn str_to_delay(s: String) -> Result<Duration, String> {
+    fn from_string(s: String) -> Result<Duration, String> {
         if let Ok(p) = s.parse() {
             if (p > 0) && (p <= Self::MAX) { return Ok(Duration::from_secs(p)) }
         };
@@ -134,19 +134,19 @@ pub fn get() -> Result<CLOptions, String> {
     if matches.opt_present("v") { show_version_and_exit() }
     let show_lo = matches.opt_present("l");
     let scale = match matches.opt_str("s") {
-        Some(s) => Scale::str_to_scale(s)?,
+        Some(s) => Scale::from_string(s)?,
         None => Scale::DEFAULT
     };
     let precision = match matches.opt_str("p") {
-        Some(p) => Precision::str_to_precision(p)?,
+        Some(p) => Precision::from_string(p)?,
         None => Precision::DEFAULT
     };
     let repeat = match matches.opt_str("r") {
-        Some(r) => Repeat::str_to_repeat(r)?,
+        Some(r) => Repeat::from_string(r)?,
         None => Repeat::DEFAULT
     };
     let delay = match matches.opt_str("d") {
-        Some(d) => Delay::str_to_delay(d)?,
+        Some(d) => Delay::from_string(d)?,
         None => Delay::DEFAULT
     };
 
