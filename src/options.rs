@@ -142,11 +142,11 @@ pub fn get() -> Result<CLOptions, String> {
         None => Precision::DEFAULT
     };
     let repeat = match matches.opt_str("r") {
-        Some(p) => Repeat::str_to_repeat(p)?,
+        Some(r) => Repeat::str_to_repeat(r)?,
         None => Repeat::DEFAULT
     };
     let delay = match matches.opt_str("d") {
-        Some(p) => Delay::str_to_delay(p)?,
+        Some(d) => Delay::str_to_delay(d)?,
         None => Delay::DEFAULT
     };
 
