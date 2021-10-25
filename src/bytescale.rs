@@ -17,9 +17,9 @@
 //  along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 const fn max_precision_or(sig_digits: usize) -> usize {
-    use crate::options::MAX_PRECISION;
+    use crate::options::Precision;
     
-    if sig_digits > MAX_PRECISION { MAX_PRECISION } else { sig_digits }
+    if sig_digits > Precision::MAX { Precision::MAX } else { sig_digits }
 }
 
 const B_MAX_PREC: usize = 0;
@@ -79,6 +79,8 @@ pub enum Scale {
 }
 
 impl Scale {
+    pub const DEFAULT: Scale = Scale::Dyn10;
+
     pub fn str_to_scale(s: String) -> Result<Scale, String> {
         match s.as_str() {
             "dyn10" => Ok(Scale::Dyn10),

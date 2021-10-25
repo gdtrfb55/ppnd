@@ -31,22 +31,58 @@ pub struct CLOptions {
     pub delay: Duration
 }
 
-pub const MAX_PRECISION: usize = 8;
+pub struct Precision(usize);
 
-fn precision_opt_help() -> String {
-    format!("precision of scaled byte count (0-{})\n(default: 3)", MAX_PRECISION)
+impl Precision {
+    const DEFAULT: usize = 3;
+    pub const MAX: usize = 8;
+
+    fn str_to_precision(s: String) -> Result<usize, String> {
+        if let Ok(p) = s.parse() {
+            if p <= Self::MAX { return Ok(p) }
+        };
+        Err(format!("precision must be an integer value from 0 to {}", Self::MAX))
+    }
+
+    fn opt_help() -> String {
+        format!("precision of scaled byte count (0-{})\n(default: 3)", Self::MAX)
+    }
 }
 
-const MAX_REPEAT: u16 = 60;
+struct Repeat(u16);
 
-fn repeat_opt_help() -> String {
-    format!("query /proc/net/dev COUNT times (1-{})\n(default: 1)", MAX_REPEAT) 
+impl Repeat {
+    const DEFAULT: u16 = 1;
+    const MAX: u16 = 60;
+
+    fn str_to_repeat(s: String) -> Result<u16, String> {
+        if let Ok(p) = s.parse() {
+            if (p > 0) && (p <= Self::MAX) { return Ok(p) }
+        };
+        Err(format!("repeat must be an integer value from 1 to {}", Self::MAX))
+    }
+
+    fn opt_help() -> String {
+        format!("query /proc/net/dev COUNT times (1-{})\n(default: 1)", Self::MAX)
+    }
 }
 
-const MAX_DELAY: u64 = 60;
+struct Delay(Duration);
 
-fn delay_opt_help() -> String {
-    format!("delay between queries in SECONDS (1-{})\n(default: 5)", MAX_DELAY)
+impl Delay {
+    const DEFAULT: Duration = Duration::from_secs(5);
+    const MAX: u64 = 60;
+
+    fn str_to_delay(s: String) -> Result<Duration, String> {
+        if let Ok(p) = s.parse() {
+            if (p > 0) && (p <= Self::MAX) { return Ok(Duration::from_secs(p)) }
+        };
+        Err(format!("delay must be an integer value from 1 to {}", Self::MAX))
+    }
+
+    fn opt_help() -> String {
+        format!("delay between queries in SECONDS (1-{})\n(default: 5)", Self::MAX)
+    }
 }
 
 fn show_help_and_exit(opts: &Options) {
@@ -77,41 +113,15 @@ fn show_version_and_exit() {
     std::process::exit(0);
 }
 
-fn valid_precision(s: String) -> Result<usize, String> {
-    if let Ok(p) = s.parse() {
-        if p <= MAX_PRECISION { return Ok(p) }
-    };
-    Err(format!("precision must be an integer value from 0 to {}", MAX_PRECISION))
-}
-
-fn valid_repeat(s: String) -> Result<u16, String> {
-    if let Ok(p) = s.parse() {
-        if (p > 0) && (p <= MAX_REPEAT) { return Ok(p) }
-    };
-    Err(format!("repeat must be an integer value from 1 to {}", MAX_REPEAT))
-}
-
-fn valid_delay(s: String) -> Result<u64, String> {
-    if let Ok(p) = s.parse() {
-        if (p > 0) && (p <= MAX_DELAY) { return Ok(p) }
-    };
-    Err(format!("delay must be an integer value from 1 to {}", MAX_DELAY))
-}
-
 pub fn get() -> Result<CLOptions, String> {
-    const DEFAULT_SCALE: Scale = Scale::Dyn10;
-    const DEFAULT_PRECISION: usize = 3;
-    const DEFAULT_REPEAT: u16 = 1;
-    const DEFAULT_DELAY: Duration = Duration::from_secs(5);
-
     let args: Vec<String> = env::args().collect();
     let mut opts = Options::new();
     
     opts.optflag("l", "show-lo", "show loopback interface in list\n(default: hide loopback)");
     opts.optopt("s", "scale", "scaling factor for byte count\n(default: dyn10)", "SCALE");
-    opts.optopt("p", "precision", &precision_opt_help(), "PRECISION");
-    opts.optopt("r", "repeat", &repeat_opt_help(), "COUNT");
-    opts.optopt("d", "delay", &delay_opt_help(), "SECONDS");
+    opts.optopt("p", "precision", &Precision::opt_help(), "PRECISION");
+    opts.optopt("r", "repeat", &Repeat::opt_help(), "COUNT");
+    opts.optopt("d", "delay", &Delay::opt_help(), "SECONDS");
     opts.optflag("h", "help", "show this help and exit");
     opts.optflag("v", "version", "show version information and exit");
     
@@ -125,19 +135,19 @@ pub fn get() -> Result<CLOptions, String> {
     let show_lo = matches.opt_present("l");
     let scale = match matches.opt_str("s") {
         Some(s) => Scale::str_to_scale(s)?,
-        None => DEFAULT_SCALE
+        None => Scale::DEFAULT
     };
     let precision = match matches.opt_str("p") {
-        Some(p) => valid_precision(p)?,
-        None => DEFAULT_PRECISION
+        Some(p) => Precision::str_to_precision(p)?,
+        None => Precision::DEFAULT
     };
     let repeat = match matches.opt_str("r") {
-        Some(p) => valid_repeat(p)?,
-        None => DEFAULT_REPEAT
+        Some(p) => Repeat::str_to_repeat(p)?,
+        None => Repeat::DEFAULT
     };
     let delay = match matches.opt_str("d") {
-        Some(p) => Duration::from_secs(valid_delay(p)?),
-        None => DEFAULT_DELAY
+        Some(p) => Delay::str_to_delay(p)?,
+        None => Delay::DEFAULT
     };
 
     Ok(CLOptions { show_lo, scale, precision, repeat, delay })
