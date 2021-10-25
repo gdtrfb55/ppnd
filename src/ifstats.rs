@@ -75,11 +75,37 @@ pub struct IFStats {
     tx: TXStats
 }
 
+fn field_to_u64(field: &str) -> Result<u64, String> {
+    if let Ok(f) = field.parse::<u64>() { return Ok(f) };
+    Err("error parsing /proc/net/dev interface data".to_string())
+}
+
+fn convert_fields(interface_fields: &Vec<&str>) -> Result<(usize, Vec<u64>), String> {
+    let mut len: usize;
+    let mut width: usize = 0;
+    let mut stats: Vec<u64> = Vec::with_capacity(interface_fields.len());
+    for f in interface_fields {
+        len = f.len();
+        if len > width { width = len };
+        stats.push(field_to_u64(f)?);
+    }
+    Ok((width, stats))
+}
+
 use crate::bytescale::Scale;
 
 impl IFStats {
     fn splat(name: String, width: usize, rx: RXStats, tx: TXStats) -> IFStats {
         IFStats { name, width, rx, tx }
+    }
+
+    pub fn new(netdev_line: &str) -> Result<IFStats, String> {
+        let mut interface_fields: Vec<&str> = netdev_line.split_whitespace().collect();
+        let interface_name = interface_fields.remove(0);
+        let (width, interface_stats) = convert_fields(&interface_fields)?;
+        let rx_stats = RXStats::splat(&interface_stats[..8]);
+        let tx_stats = TXStats::splat(&interface_stats[8..]);
+        Ok(IFStats::splat(interface_name.to_string(), width, rx_stats, tx_stats))
     }
 
     pub fn print(mut self: Self, scale: &Scale, precision: usize) {
@@ -100,30 +126,4 @@ impl IFStats {
         println!("RX Frames     {:>2$}  |  TX Collisions {:>2$}", self.rx.frames, self.tx.collisions, self.width);
         println!("RX Multicast  {:>2$}  |  TX Carrier    {:>2$}", self.rx.multicast, self.tx.carrier, self.width);
     }
-}
-
-fn field_to_u64(field: &str) -> Result<u64, String> {
-    if let Ok(f) = field.parse::<u64>() { return Ok(f) };
-    Err("error parsing /proc/net/dev interface data".to_string())
-}
-
-fn convert(interface_fields: &Vec<&str>) -> Result<(usize, Vec<u64>), String> {
-    let mut len: usize;
-    let mut width: usize = 0;
-    let mut stats: Vec<u64> = Vec::with_capacity(interface_fields.len());
-    for f in interface_fields {
-        len = f.len();
-        if len > width { width = len };
-        stats.push(field_to_u64(f)?);
-    }
-    Ok((width, stats))
-}
-
-pub fn new(netdev_line: &str) -> Result<IFStats, String> {
-    let mut interface_fields: Vec<&str> = netdev_line.split_whitespace().collect();
-    let interface_name = interface_fields.remove(0);
-    let (width, interface_stats) = convert(&interface_fields)?;
-    let rx_stats = RXStats::splat(&interface_stats[..8]);
-    let tx_stats = TXStats::splat(&interface_stats[8..]);
-    Ok(IFStats::splat(interface_name.to_string(), width, rx_stats, tx_stats))
 }

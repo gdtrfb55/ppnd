@@ -88,7 +88,7 @@ fn run() -> Result<(), String> {
         if repeating { timestamp::print() };
         for line in netdev::read()?.lines() {
             if interface_line.is_match(line) {
-                stats = ifstats::new(line)?;
+                stats = IFStats::new(line)?;
                 if (stats.name != LOOPBACK) || opts.show_lo {
                     stats.print(&opts.scale, opts.precision)
                 };
