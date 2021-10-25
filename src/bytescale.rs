@@ -98,7 +98,7 @@ impl Scale {
         }
     }
 
-    pub fn format(self: &Self, count: u64) -> (u64, usize, String) {
+    fn format(self: &Self, count: u64) -> (u64, usize, String) {
         match self {
             Scale::Dyn10 => if count < KB_DIV {
                 (B_DIV, B_MAX_PREC, B_SUFF.to_string())
@@ -139,10 +139,10 @@ impl Scale {
             Scale::Pebi => (PIB_DIV, P_MAX_PREC, PIB_SUFF.to_string())
         }
     }
-}
 
-pub fn scale_bytes(count: u64, scale: &Scale, requested_prec: usize) -> String {
-    let (divisor, usable_prec, suffix) = scale.format(count);
-    let scaled = count as f64 / divisor as f64;
-    format!("{0:.1$} {2}", scaled, std::cmp::min(usable_prec, requested_prec), suffix)
+    pub fn scaled_bytes(self: &Self, count: u64, requested_prec: usize) -> String {
+        let (divisor, usable_prec, suffix) = self.format(count);
+        let scaled = count as f64 / divisor as f64;
+        format!("{0:.1$} {2}", scaled, std::cmp::min(usable_prec, requested_prec), suffix)
+    }
 }

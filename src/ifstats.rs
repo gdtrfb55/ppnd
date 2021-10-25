@@ -75,7 +75,7 @@ pub struct IFStats {
     tx: TXStats
 }
 
-use crate::bytescale::{Scale, scale_bytes};
+use crate::bytescale::Scale;
 
 impl IFStats {
     fn splat(name: String, width: usize, rx: RXStats, tx: TXStats) -> IFStats {
@@ -83,8 +83,8 @@ impl IFStats {
     }
 
     pub fn print(mut self: Self, scale: &Scale, precision: usize) {
-        let scaled_rx = scale_bytes(self.rx.octets, scale, precision);
-        let scaled_tx = scale_bytes(self.tx.octets, scale, precision);
+        let scaled_rx = scale.scaled_bytes(self.rx.octets, precision);
+        let scaled_tx = scale.scaled_bytes(self.tx.octets, precision);
         let rx_len = scaled_rx.len();
         let tx_len = scaled_tx.len();
         if rx_len > self.width { self.width = rx_len };
