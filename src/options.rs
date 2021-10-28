@@ -21,7 +21,6 @@ extern crate getopts;
 use std::env;
 use getopts::Options;
 use std::time::Duration;
-use core::ops::RangeInclusive;
 use crate::bytescale::Scale;
 
 pub struct CLOptions {
@@ -31,6 +30,8 @@ pub struct CLOptions {
     pub repeat: u16,
     pub delay: Duration
 }
+
+use core::ops::RangeInclusive;
 
 pub struct Precision(usize);
 
