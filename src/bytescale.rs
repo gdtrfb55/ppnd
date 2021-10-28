@@ -83,26 +83,26 @@ impl Scale {
 
     pub fn from_string(s: String) -> Result<Scale, String> {
         match s.as_str() {
-            "dyn10" => Ok(Scale::Dyn10),
-            "dyn2" => Ok(Scale::Dyn2),
-            "raw" => Ok(Scale::Raw),
-            "kb" => Ok(Scale::Kilo),
-            "mb" => Ok(Scale::Mega),
-            "gb" => Ok(Scale::Giga),
-            "tb" => Ok(Scale::Tera),
-            "pb" => Ok(Scale::Peta),
-            "kib" => Ok(Scale::Kibi),
-            "mib" => Ok(Scale::Mebi),
-            "gib" => Ok(Scale::Gibi),
-            "tib" => Ok(Scale::Tebi),
-            "pib" => Ok(Scale::Pebi),
+            "dyn10" => Ok(Self::Dyn10),
+            "dyn2" => Ok(Self::Dyn2),
+            "raw" => Ok(Self::Raw),
+            "kb" => Ok(Self::Kilo),
+            "mb" => Ok(Self::Mega),
+            "gb" => Ok(Self::Giga),
+            "tb" => Ok(Self::Tera),
+            "pb" => Ok(Self::Peta),
+            "kib" => Ok(Self::Kibi),
+            "mib" => Ok(Self::Mebi),
+            "gib" => Ok(Self::Gibi),
+            "tib" => Ok(Self::Tebi),
+            "pib" => Ok(Self::Pebi),
             _ => Err(format!("'{}' is not a valid scale value", s))
         }
     }
 
     fn format(self: &Self, count: u64) -> (u64, usize, String) {
         match self {
-            Scale::Dyn10 => if count < KB_DIV {
+            Self::Dyn10 => if count < KB_DIV {
                 (B_DIV, B_MAX_PREC, B_SUFF.to_string())
             } else if count < MB_DIV {
                 (KB_DIV, K_MAX_PREC, KB_SUFF.to_string())
@@ -115,7 +115,7 @@ impl Scale {
             } else {
                 (PB_DIV, P_MAX_PREC, PB_SUFF.to_string())
             },
-            Scale::Dyn2 => if count < KIB_DIV {
+            Self::Dyn2 => if count < KIB_DIV {
                 (B_DIV, B_MAX_PREC, B_SUFF.to_string())
             } else if count < MIB_DIV {
                 (KIB_DIV, K_MAX_PREC, KIB_SUFF.to_string())
@@ -128,17 +128,17 @@ impl Scale {
             } else {
                 (PIB_DIV, P_MAX_PREC, PIB_SUFF.to_string())
             },
-            Scale::Raw => (B_DIV, B_MAX_PREC, B_SUFF.to_string()),
-            Scale::Kilo => (KB_DIV, K_MAX_PREC, KB_SUFF.to_string()),
-            Scale::Mega => (MB_DIV, M_MAX_PREC, MB_SUFF.to_string()),
-            Scale::Giga => (GB_DIV, G_MAX_PREC, GB_SUFF.to_string()),
-            Scale::Tera => (TB_DIV, T_MAX_PREC, TB_SUFF.to_string()),
-            Scale::Peta => (PB_DIV, P_MAX_PREC, PB_SUFF.to_string()),
-            Scale::Kibi => (KIB_DIV, K_MAX_PREC, KIB_SUFF.to_string()),
-            Scale::Mebi => (MIB_DIV, M_MAX_PREC, MIB_SUFF.to_string()),
-            Scale::Gibi => (GIB_DIV, G_MAX_PREC, GIB_SUFF.to_string()),
-            Scale::Tebi => (TIB_DIV, T_MAX_PREC, TIB_SUFF.to_string()),
-            Scale::Pebi => (PIB_DIV, P_MAX_PREC, PIB_SUFF.to_string())
+            Self::Raw => (B_DIV, B_MAX_PREC, B_SUFF.to_string()),
+            Self::Kilo => (KB_DIV, K_MAX_PREC, KB_SUFF.to_string()),
+            Self::Mega => (MB_DIV, M_MAX_PREC, MB_SUFF.to_string()),
+            Self::Giga => (GB_DIV, G_MAX_PREC, GB_SUFF.to_string()),
+            Self::Tera => (TB_DIV, T_MAX_PREC, TB_SUFF.to_string()),
+            Self::Peta => (PB_DIV, P_MAX_PREC, PB_SUFF.to_string()),
+            Self::Kibi => (KIB_DIV, K_MAX_PREC, KIB_SUFF.to_string()),
+            Self::Mebi => (MIB_DIV, M_MAX_PREC, MIB_SUFF.to_string()),
+            Self::Gibi => (GIB_DIV, G_MAX_PREC, GIB_SUFF.to_string()),
+            Self::Tebi => (TIB_DIV, T_MAX_PREC, TIB_SUFF.to_string()),
+            Self::Pebi => (PIB_DIV, P_MAX_PREC, PIB_SUFF.to_string())
         }
     }
 
