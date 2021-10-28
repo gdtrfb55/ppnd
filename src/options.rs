@@ -41,7 +41,7 @@ impl Precision {
 
     fn from_string(s: String) -> Result<usize, String> {
         if let Ok(p) = s.parse() {
-            if Precision::VALID.contains(&p) { return Ok(p) }
+            if Self::VALID.contains(&p) { return Ok(p) }
         };
         Err(format!("precision must be an integer value from 0 to {}", Self::MAX))
     }
@@ -60,7 +60,7 @@ impl Repeat {
 
     fn from_string(s: String) -> Result<u16, String> {
         if let Ok(r) = s.parse() {
-            if Repeat::VALID.contains(&r) { return Ok(r) }
+            if Self::VALID.contains(&r) { return Ok(r) }
         };
         Err(format!("repeat must be an integer value from 1 to {}", Self::MAX))
     }
@@ -79,7 +79,7 @@ impl Delay {
 
     fn from_string(s: String) -> Result<Duration, String> {
         if let Ok(d) = s.parse() {
-            if Delay::VALID.contains(&d) { return Ok(Duration::from_secs(d)) }
+            if Self::VALID.contains(&d) { return Ok(Duration::from_secs(d)) }
         };
         Err(format!("delay must be an integer value from 1 to {}", Self::MAX))
     }

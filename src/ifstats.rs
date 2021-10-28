@@ -94,7 +94,7 @@ impl IFStats {
         for f in interface_fields {
             len = f.len();
             if len > width { width = len };
-            stats.push(IFStats::field_to_u64(f)?);
+            stats.push(Self::field_to_u64(f)?);
         }
         Ok((width, stats))
     }
@@ -102,7 +102,7 @@ impl IFStats {
     pub fn new(netdev_line: &str) -> Result<IFStats, String> {
         let mut interface_fields: Vec<&str> = netdev_line.split_whitespace().collect();
         let interface_name = interface_fields.remove(0);
-        let (width, interface_stats) = IFStats::convert_fields(&interface_fields)?;
+        let (width, interface_stats) = Self::convert_fields(&interface_fields)?;
         let rx_stats = RXStats::splat(&interface_stats[..8]);
         let tx_stats = TXStats::splat(&interface_stats[8..]);
         Ok(IFStats::splat(interface_name.to_string(), width, rx_stats, tx_stats))
