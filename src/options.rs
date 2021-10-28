@@ -21,6 +21,7 @@ extern crate getopts;
 use std::env;
 use getopts::Options;
 use std::time::Duration;
+use core::ops::RangeInclusive;
 use crate::bytescale::Scale;
 
 pub struct CLOptions {
@@ -36,10 +37,11 @@ pub struct Precision(usize);
 impl Precision {
     const DEFAULT: usize = 3;
     pub const MAX: usize = 8;
+    const VALID: RangeInclusive<usize> = 0..=Self::MAX;
 
     fn from_string(s: String) -> Result<usize, String> {
         if let Ok(p) = s.parse() {
-            if p <= Self::MAX { return Ok(p) }
+            if Precision::VALID.contains(&p) { return Ok(p) }
         };
         Err(format!("precision must be an integer value from 0 to {}", Self::MAX))
     }
@@ -54,10 +56,11 @@ struct Repeat(u16);
 impl Repeat {
     const DEFAULT: u16 = 1;
     const MAX: u16 = 60;
+    const VALID: RangeInclusive<u16> = 1..=Self::MAX;
 
     fn from_string(s: String) -> Result<u16, String> {
         if let Ok(r) = s.parse() {
-            if (r > 0) && (r <= Self::MAX) { return Ok(r) }
+            if Repeat::VALID.contains(&r) { return Ok(r) }
         };
         Err(format!("repeat must be an integer value from 1 to {}", Self::MAX))
     }
@@ -72,10 +75,11 @@ struct Delay(Duration);
 impl Delay {
     const DEFAULT: Duration = Duration::from_secs(5);
     const MAX: u64 = 60;
+    const VALID: RangeInclusive<u64> = 1..=Self::MAX;
 
     fn from_string(s: String) -> Result<Duration, String> {
         if let Ok(d) = s.parse() {
-            if (d > 0) && (d <= Self::MAX) { return Ok(Duration::from_secs(d)) }
+            if Delay::VALID.contains(&d) { return Ok(Duration::from_secs(d)) }
         };
         Err(format!("delay must be an integer value from 1 to {}", Self::MAX))
     }
