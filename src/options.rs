@@ -56,8 +56,8 @@ impl Repeat {
     const MAX: u16 = 60;
 
     fn from_string(s: String) -> Result<u16, String> {
-        if let Ok(p) = s.parse() {
-            if (p > 0) && (p <= Self::MAX) { return Ok(p) }
+        if let Ok(r) = s.parse() {
+            if (r > 0) && (r <= Self::MAX) { return Ok(r) }
         };
         Err(format!("repeat must be an integer value from 1 to {}", Self::MAX))
     }
@@ -74,8 +74,8 @@ impl Delay {
     const MAX: u64 = 60;
 
     fn from_string(s: String) -> Result<Duration, String> {
-        if let Ok(p) = s.parse() {
-            if (p > 0) && (p <= Self::MAX) { return Ok(Duration::from_secs(p)) }
+        if let Ok(d) = s.parse() {
+            if (d > 0) && (d <= Self::MAX) { return Ok(Duration::from_secs(d)) }
         };
         Err(format!("delay must be an integer value from 1 to {}", Self::MAX))
     }
