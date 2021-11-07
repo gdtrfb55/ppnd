@@ -16,6 +16,12 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program. If not, see <https://www.gnu.org/licenses/>.
 
+//  See https://www.kernel.org/doc/html/latest/networking/statistics.html#procfs and 
+//  https://www.kernel.org/doc/html/latest/networking/statistics.html#c.rtnl_link_stats64
+//  for a good explanation of the data provided by /proc/net/dev. Even though it obtains
+//  its information from the kernel's rtnl_link_stats64 for each interface, /proc/net/dev 
+//  merges some data from components of that struct into more general categories.
+
 struct RXStats {
     octets: u64,
     packets: u64,
