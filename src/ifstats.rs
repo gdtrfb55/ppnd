@@ -22,8 +22,8 @@ struct RXStats {
     errors: u64,
     drops: u64,
     fifo: u64,
-    compressed: u64,
     frames: u64,
+    compressed: u64,
     multicast: u64
 }
 
@@ -35,8 +35,8 @@ impl RXStats {
             errors: stats[2],
             drops: stats[3],
             fifo: stats[4],
-            compressed: stats[5],
-            frames: stats[6],
+            frames: stats[5],
+            compressed: stats[6],
             multicast: stats[7]
         }
     }
@@ -48,9 +48,9 @@ struct TXStats {
     errors: u64,
     drops: u64,
     fifo: u64,
-    compressed: u64,
     collisions: u64,
-    carrier: u64
+    carrier: u64,
+    compressed: u64
 }
 
 impl TXStats {
@@ -61,9 +61,9 @@ impl TXStats {
             errors: stats[2],
             drops: stats[3],
             fifo: stats[4],
-            compressed: stats[5],
-            collisions: stats[6],
-            carrier: stats[7]
+            collisions: stats[5],
+            carrier: stats[6],
+            compressed: stats[7]
         }
     }
 }
