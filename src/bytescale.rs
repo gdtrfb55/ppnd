@@ -57,7 +57,7 @@ const GIB_DIV: u64 = KIB_DIV.pow(3);
 const GIB_FORM: (u64, usize, &str) = (GIB_DIV, G_MAX_PREC, "GiB");
 
 const TIB_DIV: u64 = KIB_DIV.pow(4);
-const TIB_FORM: (u64, usize, &str) = (TIB_DIV, G_MAX_PREC, "TiB");
+const TIB_FORM: (u64, usize, &str) = (TIB_DIV, T_MAX_PREC, "TiB");
 
 const PIB_DIV: u64 = KIB_DIV.pow(5);
 const PIB_FORM: (u64, usize, &str) = (PIB_DIV, P_MAX_PREC, "PiB");
