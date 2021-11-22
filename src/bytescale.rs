@@ -102,31 +102,21 @@ impl Scale {
 
     fn format(self: &Self, count: u64) -> (u64, usize, String) {
         match self {
-            Self::Dyn10 => if count < KB_DIV {
-                (B_DIV, B_MAX_PREC, B_SUFF.to_string())
-            } else if count < MB_DIV {
-                (KB_DIV, K_MAX_PREC, KB_SUFF.to_string())
-            } else if count < GB_DIV {
-                (MB_DIV, M_MAX_PREC, MB_SUFF.to_string())
-            } else if count < TB_DIV {
-                (GB_DIV, G_MAX_PREC, GB_SUFF.to_string())
-            } else if count < PB_DIV {
-                (TB_DIV, T_MAX_PREC, TB_SUFF.to_string())
-            } else {
-                (PB_DIV, P_MAX_PREC, PB_SUFF.to_string())
+            Self::Dyn10 => match count {
+                c if c < KB_DIV => (B_DIV, B_MAX_PREC, B_SUFF.to_string()),
+                c if c < MB_DIV => (KB_DIV, K_MAX_PREC, KB_SUFF.to_string()),
+                c if c < GB_DIV => (MB_DIV, M_MAX_PREC, MB_SUFF.to_string()),
+                c if c < TB_DIV => (GB_DIV, G_MAX_PREC, GB_SUFF.to_string()),
+                c if c < PB_DIV => (TB_DIV, T_MAX_PREC, TB_SUFF.to_string()),
+                _ => (PB_DIV, P_MAX_PREC, PB_SUFF.to_string())
             },
-            Self::Dyn2 => if count < KIB_DIV {
-                (B_DIV, B_MAX_PREC, B_SUFF.to_string())
-            } else if count < MIB_DIV {
-                (KIB_DIV, K_MAX_PREC, KIB_SUFF.to_string())
-            } else if count < GIB_DIV {
-                (MIB_DIV, M_MAX_PREC, MIB_SUFF.to_string())
-            } else if count < TIB_DIV {
-                (GIB_DIV, G_MAX_PREC, GIB_SUFF.to_string())
-            } else if count < PIB_DIV {
-                (TIB_DIV, T_MAX_PREC, TIB_SUFF.to_string())
-            } else {
-                (PIB_DIV, P_MAX_PREC, PIB_SUFF.to_string())
+            Self::Dyn2 => match count {
+                c if c < KIB_DIV => (B_DIV, B_MAX_PREC, B_SUFF.to_string()),
+                c if c < MIB_DIV => (KIB_DIV, K_MAX_PREC, KIB_SUFF.to_string()),
+                c if c < GIB_DIV => (MIB_DIV, M_MAX_PREC, MIB_SUFF.to_string()),
+                c if c < TIB_DIV => (GIB_DIV, G_MAX_PREC, GIB_SUFF.to_string()),
+                c if c < PIB_DIV => (TIB_DIV, T_MAX_PREC, TIB_SUFF.to_string()),
+                _ => (PIB_DIV, P_MAX_PREC, PIB_SUFF.to_string())
             },
             Self::Raw => (B_DIV, B_MAX_PREC, B_SUFF.to_string()),
             Self::Kilo => (KB_DIV, K_MAX_PREC, KB_SUFF.to_string()),
