@@ -9,7 +9,7 @@ Options:
     -l, --show-lo       show loopback interface in list
                         (default: hide loopback)
     -s, --scale SCALE   scaling factor for byte count
-                        (default: dyn10)
+                        (default: dyn)
     -p, --precision PRECISION
                         precision of scaled byte count (0-8)
                         (default: 3)
@@ -24,7 +24,7 @@ Valid parameters for SCALE are:
     
 'raw' = raw byte count
 
-'dyn10' = dynamic power-of-10 scaling (kB = 1000 bytes)
+'dyn' or 'dyn10' = dynamic power-of-10 scaling (kB = 1000 bytes)
 'kb', 'mb', 'gb', 'tb', or 'pb' = fixed power-of-10 scaling
 
 'dyn2' = dynamic power-of-2 scaling (KiB = 1024 bytes)
