@@ -30,37 +30,37 @@ const T_MAX_PREC: usize = max_precision_or(12);
 const P_MAX_PREC: usize = max_precision_or(15);
 
 const B_DIV: u64 = 1;
-const B_SUFF: &str = "B";
+const B_FORM: (u64, usize, &str) = (B_DIV, B_MAX_PREC, "B");
 
 const KB_DIV: u64 = 1000;
-const KB_SUFF: &str = "kB";
+const KB_FORM: (u64, usize, &str) = (KB_DIV, K_MAX_PREC, "kB");
 
 const MB_DIV: u64 = KB_DIV.pow(2);
-const MB_SUFF: &str = "MB";
+const MB_FORM: (u64, usize, &str) = (MB_DIV, M_MAX_PREC, "MB");
 
 const GB_DIV: u64 = KB_DIV.pow(3);
-const GB_SUFF: &str = "GB";
+const GB_FORM: (u64, usize, &str) = (GB_DIV, G_MAX_PREC, "GB");
 
 const TB_DIV: u64 = KB_DIV.pow(4);
-const TB_SUFF: &str = "TB";
+const TB_FORM: (u64, usize, &str) = (TB_DIV, T_MAX_PREC, "TB");
 
 const PB_DIV: u64 = KB_DIV.pow(5);
-const PB_SUFF: &str = "PB";
+const PB_FORM: (u64, usize, &str) = (PB_DIV, P_MAX_PREC, "PB");
 
 const KIB_DIV: u64 = 1024;
-const KIB_SUFF: &str = "KiB";
+const KIB_FORM: (u64, usize, &str) = (KIB_DIV, K_MAX_PREC, "KiB");
 
 const MIB_DIV: u64 = KIB_DIV.pow(2);
-const MIB_SUFF: &str = "MiB";
+const MIB_FORM: (u64, usize, &str) = (MIB_DIV, M_MAX_PREC, "MiB");
 
 const GIB_DIV: u64 = KIB_DIV.pow(3);
-const GIB_SUFF: &str = "GiB";
+const GIB_FORM: (u64, usize, &str) = (GIB_DIV, G_MAX_PREC, "GiB");
 
 const TIB_DIV: u64 = KIB_DIV.pow(4);
-const TIB_SUFF: &str = "TiB";
+const TIB_FORM: (u64, usize, &str) = (TIB_DIV, G_MAX_PREC, "TiB");
 
 const PIB_DIV: u64 = KIB_DIV.pow(5);
-const PIB_SUFF: &str = "PiB";
+const PIB_FORM: (u64, usize, &str) = (PIB_DIV, P_MAX_PREC, "PiB");
 
 pub enum Scale {
     Dyn10,
@@ -100,7 +100,7 @@ impl Scale {
         }
     }
 
-    fn format(self: &Self, count: u64) -> (u64, usize, String) {
+    fn format(self: &Self, count: u64) -> (u64, usize, &'static str) {
         match self {
             Self::Dyn10 => {
                 let s = match count {
@@ -124,17 +124,17 @@ impl Scale {
                 };
                 s.format(count)
             },
-            Self::Raw => (B_DIV, B_MAX_PREC, B_SUFF.to_string()),
-            Self::Kilo => (KB_DIV, K_MAX_PREC, KB_SUFF.to_string()),
-            Self::Mega => (MB_DIV, M_MAX_PREC, MB_SUFF.to_string()),
-            Self::Giga => (GB_DIV, G_MAX_PREC, GB_SUFF.to_string()),
-            Self::Tera => (TB_DIV, T_MAX_PREC, TB_SUFF.to_string()),
-            Self::Peta => (PB_DIV, P_MAX_PREC, PB_SUFF.to_string()),
-            Self::Kibi => (KIB_DIV, K_MAX_PREC, KIB_SUFF.to_string()),
-            Self::Mebi => (MIB_DIV, M_MAX_PREC, MIB_SUFF.to_string()),
-            Self::Gibi => (GIB_DIV, G_MAX_PREC, GIB_SUFF.to_string()),
-            Self::Tebi => (TIB_DIV, T_MAX_PREC, TIB_SUFF.to_string()),
-            Self::Pebi => (PIB_DIV, P_MAX_PREC, PIB_SUFF.to_string())
+            Self::Raw => B_FORM,
+            Self::Kilo => KB_FORM,
+            Self::Mega => MB_FORM,
+            Self::Giga => GB_FORM,
+            Self::Tera => TB_FORM,
+            Self::Peta => PB_FORM,
+            Self::Kibi => KIB_FORM,
+            Self::Mebi => MIB_FORM,
+            Self::Gibi => GIB_FORM,
+            Self::Tebi => TIB_FORM,
+            Self::Pebi => PIB_FORM
         }
     }
 
