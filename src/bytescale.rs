@@ -83,7 +83,7 @@ impl Scale {
 
     pub fn from_string(s: String) -> Result<Scale, String> {
         match s.as_str() {
-            "dyn10" => Ok(Self::Dyn10),
+            "dyn" | "dyn10" => Ok(Self::Dyn10),
             "dyn2" => Ok(Self::Dyn2),
             "raw" => Ok(Self::Raw),
             "kb" => Ok(Self::Kilo),
