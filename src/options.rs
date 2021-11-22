@@ -98,7 +98,7 @@ Valid parameters for SCALE are:
     
 'raw' = raw byte count
 
-'dyn10' = dynamic power-of-10 scaling (kB = 1000 bytes)
+'dyn' or 'dyn10' = dynamic power-of-10 scaling (kB = 1000 bytes)
 'kb', 'mb', 'gb', 'tb', or 'pb' = fixed power-of-10 scaling
 
 'dyn2' = dynamic power-of-2 scaling (KiB = 1024 bytes)
@@ -123,7 +123,7 @@ pub fn get() -> Result<CLOptions, String> {
     let mut opts = Options::new();
     
     opts.optflag("l", "show-lo", "show loopback interface in list\n(default: hide loopback)");
-    opts.optopt("s", "scale", "scaling factor for byte count\n(default: dyn10)", "SCALE");
+    opts.optopt("s", "scale", "scaling factor for byte count\n(default: dyn)", "SCALE");
     opts.optopt("p", "precision", &Precision::opt_help(), "PRECISION");
     opts.optopt("r", "repeat", &Repeat::opt_help(), "COUNT");
     opts.optopt("d", "delay", &Delay::opt_help(), "SECONDS");
