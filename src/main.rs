@@ -1,20 +1,22 @@
-//  This file is part of the ppnd distribution, which can be found at 
-//  <https://github.com/gdtrfb55/ppnd>.
-//
-//  Copyright (C) 2021 Jack Browning.
-//
-//  This program is FREE SOFTWARE: you can redistribute it and/or modify
-//  it under the terms of the GNU General Public License as published by
-//  the Free Software Foundation, either version 3 of the License, or
-//  (at your option) any later version.
-//
-//  This program is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-//  GNU General Public License for more details.
-//
-//  You should have received a copy of the GNU General Public License
-//  along with this program. If not, see <https://www.gnu.org/licenses/>.
+/*
+    This file is part of the ppnd distribution, which can be found at
+    <https://github.com/gdtrfb55/ppnd>.
+
+    Copyright (C) 2021 Jack Browning.
+
+    This program is FREE SOFTWARE: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program. If not, see <https://www.gnu.org/licenses/>.
+*/
 
 static PROGNAME: &str = "ppnd";
 static PROGVERS: &str = "0.9.9";
@@ -55,7 +57,7 @@ mod netdev {
         use std::fs;
 
         const PATH: &str = r"/proc/net/dev";
-        
+
         if let Ok(s) = fs::read_to_string(PATH) { return Ok(s) };
         Err(format!("could not read {}", PATH))
     }
@@ -82,7 +84,7 @@ fn run() -> Result<(), String> {
     let mut count = opts.repeat;
     let repeating = count > 1;
     let mut stats: IFStats;
- 
+
     loop {
         count -= 1;
         if repeating { timestamp::print() };

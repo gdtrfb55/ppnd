@@ -1,20 +1,22 @@
-//  This file is part of the ppnd distribution, which can be found at 
-//  <https://github.com/gdtrfb55/ppnd>.
-//
-//  Copyright (C) 2021 Jack Browning.
-//
-//  This program is FREE SOFTWARE: you can redistribute it and/or modify
-//  it under the terms of the GNU General Public License as published by
-//  the Free Software Foundation, either version 3 of the License, or
-//  (at your option) any later version.
-//
-//  This program is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-//  GNU General Public License for more details.
-//
-//  You should have received a copy of the GNU General Public License
-//  along with this program. If not, see <https://www.gnu.org/licenses/>.
+/*
+    This file is part of the ppnd distribution, which can be found at
+    <https://github.com/gdtrfb55/ppnd>.
+
+    Copyright (C) 2021 Jack Browning.
+
+    This program is FREE SOFTWARE: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program. If not, see <https://www.gnu.org/licenses/>.
+*/
 
 extern crate getopts;
 
@@ -95,7 +97,7 @@ fn show_help_and_exit(opts: &Options) {
 
     const SCALE_PARAMS: &str = "
 Valid parameters for SCALE are:
-    
+
 'raw' = raw byte count
 
 'dyn' or 'dyn10' = dynamic power-of-10 scaling (kB = 1000 bytes)
@@ -121,7 +123,7 @@ fn show_version_and_exit() {
 pub fn get() -> Result<CLOptions, String> {
     let args: Vec<String> = env::args().collect();
     let mut opts = Options::new();
-    
+
     opts.optflag("l", "show-lo", "show loopback interface in list\n(default: hide loopback)");
     opts.optopt("s", "scale", "scaling factor for byte count\n(default: dyn)", "SCALE");
     opts.optopt("p", "precision", &Precision::opt_help(), "PRECISION");
@@ -129,12 +131,12 @@ pub fn get() -> Result<CLOptions, String> {
     opts.optopt("d", "delay", &Delay::opt_help(), "SECONDS");
     opts.optflag("h", "help", "show this help and exit");
     opts.optflag("v", "version", "show version information and exit");
-    
+
     let matches = match opts.parse(&args) {
         Ok(m) => { m }
         Err(e) => return Err(e.to_string())
     };
-    
+
     if matches.opt_present("h") { show_help_and_exit(&opts) };
     if matches.opt_present("v") { show_version_and_exit() }
     let show_lo = matches.opt_present("l");
