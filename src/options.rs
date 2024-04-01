@@ -35,7 +35,7 @@ pub struct CLOptions {
 
 use core::ops::RangeInclusive;
 
-pub struct Precision(usize);
+pub struct Precision;
 
 impl Precision {
     const DEFAULT: usize = 3;
@@ -54,7 +54,7 @@ impl Precision {
     }
 }
 
-struct Repeat(u16);
+struct Repeat;
 
 impl Repeat {
     const DEFAULT: u16 = 1;
@@ -73,7 +73,7 @@ impl Repeat {
     }
 }
 
-struct Delay(Duration);
+struct Delay;
 
 impl Delay {
     const DEFAULT: Duration = Duration::from_secs(5);
